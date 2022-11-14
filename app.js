@@ -5,12 +5,14 @@ const port = process.env.PORT || 3000;
 const contractRouter = require("./routes/contractRoutes");
 const bodyParser = require("body-parser");
 
-app.use(bodyParser.json());
+app.set("view engine", "ejs");
 
-app.use("/api", contractRouter);
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use("/contract", contractRouter);
 
 app.get("/", (req, res) => {
-  res.send("Home Route");
+  res.redirect("/contract");
 });
 
 app.listen(port, async () => {
