@@ -13,7 +13,7 @@
     <div class="container">
       <div class="my-5">
         <h4>Create New Contracts</h4>
-        <form action="/contract" method="POST" class="form-inline">
+        <form action="/contract" method="POST" class="form-inline" id="form">
           <div class="form-group my-4">
             <input type="text" name="firstname" placeholder="First Name" class="form-control <%= error.firstname ? "is-invalid" : "" %>" />
             <div class="invalid-feedback"><%= error.firstname %></div>
@@ -31,8 +31,7 @@
             <div class="invalid-feedback"><%= error.phone %></div>
           </div>
           <div class="form-group my-4">
-            <input type="hidden" name="id" placeholder="id" class="form-control" />
-            <!-- <div class="invalid-feedback"><%= error.email %></div> -->
+            <input type="hidden" name="id" class="form-control" />
           </div>
           <input type="submit" class="btn btn-primary" value="Submit" />
         </form>
@@ -60,7 +59,7 @@
             <td><%= contract?.email %></td>
             <td><%= contract?.phone %></td>
             <td>
-              <button class="btn btn-warning btn-sm">Edit</button>
+              <button class="btn btn-warning btn-sm edit-btn" data-firstname="<%= contract.firstname %>" data-lastname="<%= contract.lastname %>" data-email="<%= contract.email %>" data-phone="<%= contract.phone %>" data-_id="<%= contract._id %>">Edit</button>
             </td>
             <td>
               <a class="btn btn-danger btn-sm" href="/contract/delete/<%= contract._id %>">Delete</a>
@@ -72,5 +71,24 @@
     </div>
     <!---Bootstrap CDN---->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+    <script>
+      window.onload = function () {
+        const editBtn = document.getElementsByClassName("edit-btn");
+        const form = document.getElementById("form");
+        [...editBtn].forEach((btn) =>
+          btn.addEventListener("click", (e) => {
+            const { firstname, lastname, email, phone, _id } = e.target.dataset;
+            console.log(firstname, lastname, email, phone, _id);
+            form[0].value = firstname;
+            form[1].value = lastname;
+            form[2].value = email;
+            form[3].value = phone;
+            form[4].value = _id;
+            form[5].value = "Update";
+          })
+        );
+      };
+    </script>
   </body>
 </html>

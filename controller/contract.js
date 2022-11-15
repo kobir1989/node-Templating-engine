@@ -1,5 +1,6 @@
 const Contract = require("../model/Contract");
 
+//Create new Contract Controller
 module.exports.createContracts = async (req, res) => {
   try {
     const { firstname, lastname, email, phone } = req.body;
@@ -22,7 +23,8 @@ module.exports.createContracts = async (req, res) => {
         phone,
       });
       await contract.save();
-      res.status(200).send("Contract Added Successfully");
+      const contracts = await Contract.find();
+      return res.status(200).render("index", { contracts, error: {} });
     }
   } catch (error) {
     res.status(401).send("Something went wrong Please try again!");
@@ -30,6 +32,7 @@ module.exports.createContracts = async (req, res) => {
   }
 };
 
+//Get all Contract Controller
 module.exports.getContracts = async (_, res) => {
   try {
     const contracts = await Contract.find();
@@ -40,6 +43,7 @@ module.exports.getContracts = async (_, res) => {
   }
 };
 
+//Get Single contractController
 module.exports.getSingleContract = async (req, res) => {
   try {
     const { id } = req.params;
@@ -50,23 +54,30 @@ module.exports.getSingleContract = async (req, res) => {
   }
 };
 
+//Update Existing Contract
 module.exports.updateContracts = async (req, res) => {
   try {
     const { firstname, lastname, email, phone } = req.body;
     const { id } = req.params;
-    const updatedContract = await Contract.findOneAndUpdate({ _id: id }, { $set: { firstname, lastname, email, phone } }, { new: true });
-    await res.status(200).send(updatedContract);
+    console.log(firstname, lastname, email, phone);
+    if (id) {
+      await Contract.findOneAndUpdate({ _id: id }, { $set: { firstname, lastname, email, phone } });
+      const contracts = await Contract.find();
+      await res.status(200).render("index", { contracts, error: {} });
+    }
   } catch (error) {
     res.status(401).send("update failed");
     console.log(error);
   }
 };
 
+//Delete Existing Contract
 module.exports.deleteContracts = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedContract = await Contract.findOneAndDelete({ _id: id });
-    await res.status(200).send(deletedContract);
+    await Contract.findOneAndDelete({ _id: id });
+    const contracts = await Contract.find();
+    await res.status(200).render("index", { contracts, error: {} });
   } catch (error) {
     res.status(401).send("Delete failed");
     console.log(error);

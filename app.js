@@ -4,7 +4,6 @@ const dbConnector = require("./config/db-conncetor");
 const port = process.env.PORT || 3000;
 const contractRouter = require("./routes/contractRoutes");
 const bodyParser = require("body-parser");
-
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));

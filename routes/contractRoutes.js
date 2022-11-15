@@ -4,8 +4,10 @@ const { createContracts, getContracts, updateContracts, deleteContracts, getSing
 
 router.get("/", getContracts);
 router.get("/:id", getSingleContract);
+router.get("/delete/:id", deleteContracts);
+router.post("/:id", updateContracts);
 router.post("/", createContracts);
-router.put("/update/:id", updateContracts);
-router.delete("/delete/:id", deleteContracts);
+
+// router.delete("/:id", deleteContracts);
 
 module.exports = router;
